@@ -1,0 +1,85 @@
+FROM ubuntu:22.04 
+LABEL author=wen \
+        version=0 \
+        description='ubuntu'
+
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+   sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list       
+
+# RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+#     sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list       
+
+RUN apt-get clean && apt-get update --fix-missing && apt-get upgrade -y 
+RUN apt install -qqy  wget curl openssh-server  vim net-tools iputils-ping\
+    && apt-get autoclean  \
+    && apt-get autoremove
+
+# ssh
+# 修改ssh配置文件，文件位置/etc/ssh/sshd_config，添加允许所有主机连接，
+RUN mkdir -p /var/run/sshd \
+        && sed -i '1iPermitRootLogin yes' /etc/ssh/sshd_config
+
+# 开放22端口
+EXPOSE 22
+# EXPOSE 111/udp 2049/tcp
+CMD ["/usr/sbin/sshd","-D"]
+
+# xrdp
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update \
+    && apt install -y language-pack-zh-han* \
+    && apt install -y language-pack-gnome-zh-han* \
+    && apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils \
+    && apt install -y xrdp
+
+RUN echo "root:0"|chpasswd
+# WORKDIR /workspace
+
+# apt install
+RUN apt update \ 
+    && apt install -y zsh screen autojump firefox ttf-wqy-zenhei \
+    && apt  install -y locales xfonts-intl-chinese fonts-wqy-microhei \
+    && apt install -y fcitx fcitx-googlepinyin \
+    && apt install -y xdg-user-dirs-gtk \
+    && apt-get autoclean \
+    && apt-get autoremove
+
+RUN  apt update \
+    # && apt install -y ctags \
+    && apt install -y telnet \
+    && apt install -y mysql-server \
+    && apt install -y redis-server \
+    && apt install -y libmysqlclient-dev \
+    # && apt install -y qt5-default qtcreator \
+    && apt-get autoclean \
+    && apt-get autoremove
+
+# chrome 进去后打不开, 已经解决，最后不应该修改$(which google-chrome-stable)，因为是软链接
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O google-chrome.deb \
+    && apt install -y fonts-liberation libu2f-udev libvulkan1 \
+    && dpkg -i google-chrome.deb \
+    && rm google-chrome.deb \
+    && sed -i '/exec -a "$0" "$HERE\/chrome" "$@"/s/\(exec -a "$0" "$HERE\/chrome" "$@"\)/\1 --user-data-dir --no-sandbox --disable-dev-shm-usage/g' /opt/google/chrome/google-chrome
+
+# vscode 
+RUN wget https://az764295.vo.msecnd.net/stable/ee2b180d582a7f601fa6ecfdad8d9fd269ab1884/code_1.76.2-1678817801_amd64.deb -O vscode.deb \
+    && dpkg -i vscode.deb \
+    && rm vscode.deb \
+    && sed -i '/Exec/s/\(Exec=\/usr\/share\/code\/code \S*\) %F/\1 --no-sandbox %F/g' /usr/share/applications/code.desktop
+
+RUN apt install -y  gcc g++ make automake  gdb  zip sudo git cmake
+
+# user
+RUN useradd -r -ms /bin/bash ai \
+    && adduser ai sudo \
+    && echo "ai:1"|chpasswd \
+    && groupadd hjimi \
+    && gpasswd -a ai hjimi
+
+# RUN cd /tmp && git clone https://github.com/Kitware/CMake.git
+# RUN  cd /tmp/CMake \
+#     && bash ./configure \
+#     && make -j8 \
+#     make install \
+#     cd /tmp \
+#     rm -rf ./CMake

@@ -1,0 +1,9 @@
+FROM registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0 
+LABEL author=wen \
+        version=0 \
+        description='ubuntu'
+
+RUN apt update \ 
+    && apt install -y libpcre3-dev libssl-dev perl make build-essential curl zlib1g-dev cmake telnet uuid-dev libjson-c-dev
+
+# atp install -y mlocate libjsoncpp-dev bear git

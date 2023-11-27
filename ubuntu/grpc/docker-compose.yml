@@ -1,0 +1,127 @@
+#docker-compose.yaml代码
+version: "3.8"
+services:
+#   ubuntu18-nginx:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.24
+#     ports:
+#         - "10024:22"
+#         - "12240-12249:12240-12249"
+#   ubuntu18-nginx:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.24
+#     ports:
+#         - "10024:22"
+#         - "12240-12249:12240-12249"
+#   ubuntu18-openresty:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.25
+#     ports:
+#         - "10025:22"
+#         - "12250-12259:12250-12259"
+#   ubuntu18-workflow:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.26
+#     ports:
+#         - "10026:22"
+#         - "12260-12269:12260-12269"
+#   ubuntu18-mqtt:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.27
+#     ports:
+#         - "10027:22"
+#         - "11883:1883"
+#         - "12270-12279:12270-12279"
+#   ubuntu18-kafka:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.28
+#     ports:
+#         - "10028:22"
+#         - "12280-12289:12280-12289"
+  ubuntu18-grpc:
+    image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+    shm_size: '8gb'
+    volumes:
+        - zvhome:/root
+        - share:/mnt/share
+        - /home/wenquanshan/ZeroVoice:/workspace
+    networks: 
+        hjimi:
+            ipv4_address: 172.16.0.29
+    ports:
+        - "10029:22"
+        - "12290-12299:12290-12299"
+#   ubuntu18-skynet:
+#     image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1
+#     shm_size: '8gb'
+#     volumes:
+#         - zvhome:/root
+#         - share:/mnt/share
+#         - /home/wenquanshan/ZeroVoice:/workspace
+#     networks: 
+#         hjimi:
+#             ipv4_address: 172.16.0.30
+#     ports:
+#         - "10030:22"
+#         - "12300-12309:12300-12309"
+
+
+
+networks:
+    hjimi:
+        name: hjimi
+        external: true
+
+volumes:
+    share:
+        name: share
+        external: true 
+    ubuntu18home:
+        name: ubuntu18home
+        external: true
+    zvhome:
+        name: zvhome
+    # ubuntu22home:
+    #     name: ubuntu22home gdb

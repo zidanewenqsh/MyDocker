@@ -1,0 +1,65 @@
+# FROM continuumio/anaconda3:2023.03-1 AS CONDA
+# FROM registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:base-root-18.04-v0 
+FROM registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-v0.1 
+LABEL author=wen \
+        version=0.1 \
+        description='ubuntu ai xrdp'
+
+# xrdp
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update \
+    && apt install -y language-pack-zh-han* \
+    && apt install -y language-pack-gnome-zh-han* \
+    && apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils \
+    && apt install -y xrdp
+
+# user
+RUN useradd -r -ms /bin/bash ai \
+    && adduser ai sudo \
+    && echo "ai:1"|chpasswd \
+    && groupadd hjimi \
+    && gpasswd -a ai hjimi
+
+RUN apt update \
+    && apt install -y git
+
+# RUN cd /tmp && git clone https://github.com/Kitware/CMake.git
+ADD CMake-3.25.0.tar.gz /tmp
+RUN  cd /tmp/CMake-3.25.0 \
+    && bash ./configure \
+    && make -j8 \
+    && make install \
+    && cd /tmp \
+    && rm -rf /tmp/CMake-3.25.0
+
+USER ai
+# COPY --from=CONDA /opt/conda /home/ai/conda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/conda.sh \
+    && /bin/bash /tmp/conda.sh -b -p /home/ai/conda \
+    && rm /tmp/conda.sh
+
+RUN mkdir /home/ai/.pip \
+&& echo '[global]\n\
+index-url=https://pypi.tuna.tsinghua.edu.cn/simple\n\
+[install]\n\
+trusted-host=pypi.tuna.tsinghua.edu.cn\n'>>~/.pip/pip.conf
+
+RUN echo '\n\
+source /usr/share/autojump/autojump.sh\n\
+'>>~/.bashrc 
+
+RUN echo '\n\
+__conda_setup="$('/home/ai/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"\n\
+if [ $? -eq 0 ]; then\n\
+    eval "$__conda_setup"\n\
+else\n\
+    if [ -f "/home/ai/conda/etc/profile.d/conda.sh" ]; then\n\
+        . "/home/ai/conda/etc/profile.d/conda.sh"\n\
+    else\n\
+        export PATH="/home/ai/conda/bin:$PATH"\n\
+    fi\n\
+fi\n\
+unset __conda_setup\n'\
+ >> ~/.bashrc && bash -c "source /home/ai/.bashrc"
+
+USER root

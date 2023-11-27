@@ -1,0 +1,36 @@
+FROM ubuntu:18.04 
+LABEL author=wen \
+        version=0 \
+        description='ubuntu nfs'
+
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+   sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list       
+
+# RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+#     sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list       
+
+RUN apt-get clean && apt-get update --fix-missing && apt-get upgrade -y 
+RUN apt install -qqy  wget curl openssh-server  vim net-tools iputils-ping\
+    && apt-get install -yqq nfs-kernel-server runit inotify-tools \
+    && apt-get autoclean  \
+    && apt-get autoremove
+
+# ssh
+# 修改ssh配置文件，文件位置/etc/ssh/sshd_config，添加允许所有主机连接，
+RUN mkdir -p /var/run/sshd \
+        && sed -i '1iPermitRootLogin yes' /etc/ssh/sshd_config
+
+# 开放22端口
+EXPOSE 22
+# EXPOSE 111/udp 2049/tcp
+CMD ["/usr/sbin/sshd","-D"]
+
+# # xrdp
+# ARG DEBIAN_FRONTEND=noninteractive
+# RUN apt update \
+#     && apt install -y language-pack-zh-han* \
+#     && apt install -y language-pack-gnome-zh-han* \
+#     && apt install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils \
+#     && apt install -y xrdp
+
+RUN echo "root:0"|chpasswd

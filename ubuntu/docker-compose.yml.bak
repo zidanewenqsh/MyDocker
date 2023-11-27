@@ -1,0 +1,28 @@
+#docker-compose.yaml代码
+version: "3.8"
+services:
+  ubuntuserver:
+    # container_name: server
+    privileged: true
+    build: .
+    shm_size: '16gb'
+    networks:
+        ubuntuhost:
+           ipv4_address: 172.19.0.101
+    ports:
+        - "60022:22"
+        - "62049:2049"
+        - "1111:111"
+    volumes:
+        - /home/hjimi/Docker/Desktop:/mnt/Desktop
+        - /home/hjimi/Docker/opt:/mnt/opt
+        - /home/hjimi/Docker/usr:/mnt/usr
+
+
+networks:
+    ubuntuhost:
+        name: ubuntuhost
+        external: true
+
+
+

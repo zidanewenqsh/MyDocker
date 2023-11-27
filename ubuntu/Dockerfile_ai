@@ -1,0 +1,50 @@
+# FROM continuumio/anaconda3:2023.03-1 AS CONDA
+FROM registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:base-root-18.04-v0 
+LABEL author=wen \
+        version=0 \
+        description='ubuntu user'
+
+# user
+RUN useradd -r -ms /bin/bash ai \
+    && adduser ai sudo \
+    && echo "ai:1"|chpasswd \
+    && groupadd hjimi \
+    && gpasswd -a ai hjimi
+
+# config
+USER ai
+# COPY --from=CONDA /opt/conda /home/ai/conda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/conda.sh \
+    && /bin/bash /tmp/conda.sh -b -p /home/ai/conda \
+    && rm conda.sh
+
+RUN mkdir /home/ai/.pip \
+&& echo '[global]\n\
+index-url=https://pypi.tuna.tsinghua.edu.cn/simple\n\
+[install]\n\
+trusted-host=pypi.tuna.tsinghua.edu.cn\n'>>~/.pip/pip.conf
+
+RUN echo '\n\
+source /usr/share/autojump/autojump.sh\n\
+'>>~/.bashrc 
+
+RUN echo '\n\
+__conda_setup="$('/home/ai/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"\n\
+if [ $? -eq 0 ]; then\n\
+    eval "$__conda_setup"\n\
+else\n\
+    if [ -f "/home/ai/conda/etc/profile.d/conda.sh" ]; then\n\
+        . "/home/ai/conda/etc/profile.d/conda.sh"\n\
+    else\n\
+        export PATH="/home/ai/conda/bin:$PATH"\n\
+    fi\n\
+fi\n\
+unset __conda_setup\n'\
+ >> ~/.bashrc && bash -c "source /home/ai/.bashrc"
+
+USER root
+
+RUN apt update \ 
+    && apt install -y libpcre3-dev libssl-dev perl make build-essential curl zlib1g-dev cmake telnet uuid-dev libjson-c-dev \
+    && atp install -y mlocate libjsoncpp-dev bear git
+    

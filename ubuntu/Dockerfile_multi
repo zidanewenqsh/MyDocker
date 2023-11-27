@@ -1,0 +1,4 @@
+FROM ubuntu:base-18.04-v0
+LABEL author=wen \
+        version=0 \
+        description='ubuntu'
