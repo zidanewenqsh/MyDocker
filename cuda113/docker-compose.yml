@@ -1,8 +1,8 @@
 #docker-compose.yaml代码
 version: "3.8"
 services:
-  nvidiacuda:
-    container_name: ai
+  nvidiacuda113:
+    container_name: ai113
     image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
     shm_size: '64gb'

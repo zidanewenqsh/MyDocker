@@ -1,8 +1,7 @@
-# FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu18.04 
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu18.04 
+FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu18.04 
 LABEL author=wen \
         version=0 \
-        description='nvidia_cuda 11.8'
+        description='nvidia_cuda'
 
 #  change resource 换阿里源
 # RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list && \
@@ -18,7 +17,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
 # apt install
 RUN apt-get clean && apt-get update --fix-missing && apt-get upgrade -y 
 
-RUN apt install -y  wget curl openssh-server vim gcc g++ make automake cmake gdb  zip sudo git net-tools \
+RUN apt install -y  wget curl openssh-server  vim gcc g++ make automake cmake gdb  zip sudo git net-tools \
     && apt-get autoclean  \
     && apt-get autoremove
 
@@ -105,22 +104,22 @@ RUN wget https://az764295.vo.msecnd.net/stable/ee2b180d582a7f601fa6ecfdad8d9fd26
     && rm vscode.deb \
     && sed -i '/Exec/s/\(Exec=\/usr\/share\/code\/code \S*\) %F/\1 --no-sandbox %F/g' /usr/share/applications/code.desktop
 
-# # condabin
-# # ARG CONDABIN=/opt/conda/bin
-# RUN /opt/conda/bin/python -m pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113 \
-#     && /opt/conda/bin/python -m pip install opencv-contrib-python==4.5.5.64 \
-#     && /opt/conda/bin/python -m pip install opencv-contrib-python-headless==4.5.5.64 \
-#     && /opt/conda/bin/python -m pip install opencv-python==4.5.5.64 \
-#     && /opt/conda/bin/python -m pip install pyqt5 \
-#     && /opt/conda/bin/python -m pip install pyqt5-tools \
-#     && /opt/conda/bin/python -m pip install eric-ide==20.12.1
+# condabin
+# ARG CONDABIN=/opt/conda/bin
+RUN /opt/conda/bin/python -m pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113 \
+    && /opt/conda/bin/python -m pip install opencv-contrib-python==4.5.5.64 \
+    && /opt/conda/bin/python -m pip install opencv-contrib-python-headless==4.5.5.64 \
+    && /opt/conda/bin/python -m pip install opencv-python==4.5.5.64 \
+    && /opt/conda/bin/python -m pip install pyqt5 \
+    && /opt/conda/bin/python -m pip install pyqt5-tools \
+    && /opt/conda/bin/python -m pip install eric-ide==20.12.1
 
 # user
 RUN useradd -r -ms /bin/bash ai \
     && adduser ai sudo \
     && echo "ai:1"|chpasswd \
-    && groupadd docker \
-    && gpasswd -a ai docker
+    && groupadd hjimi \
+    && gpasswd -a ai hjimi
 
 
 # config
