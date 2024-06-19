@@ -3,9 +3,12 @@ version: "3.8"
 services:
   nvidiacuda113:
     container_name: ai113
-    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
+    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:open3d-pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.5
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
     shm_size: '64gb'
+    # environment:
+    #   - DISPLAY=${DISPLAY}
+    # network_mode: host
     networks:
         mycuda:
            ipv4_address: 172.18.0.4
@@ -14,8 +17,9 @@ services:
         - "8389:3389"
     volumes:
         - aihome:/home/ai
-        - /home/wen/share:/nfs
-        - /home/wen/Projects:/workspace
+        - /home/shixian/share:/nfs
+        - /home/shixian/Projects:/workspace
+        # - /tmp/.X11-unix:/tmp/.X11-unix
     deploy:
       resources:
         reservations:
@@ -36,8 +40,8 @@ networks:
 
 volumes:
     aihome:
-        name: aihome
-        external: true
+        # name: aihome
+        # external: true
 
 
 

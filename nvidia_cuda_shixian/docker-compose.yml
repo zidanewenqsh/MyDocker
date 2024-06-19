@@ -5,7 +5,7 @@ services:
     container_name: bj
     image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
-    shm_size: '32gb'
+    shm_size: '16gb'
     networks:
         mycuda:
            ipv4_address: 172.18.0.10
@@ -14,8 +14,8 @@ services:
         - "6389:3389"
     volumes:
         - bjhome:/home/ai
-        - /home/wen/share:/nfs
-        - /home/wen/BJProjects:/workspace
+        - /home/shixian/share:/nfs
+        - /home/shixian/BJProjects:/workspace
     deploy:
       resources:
         reservations:
@@ -41,8 +41,8 @@ services:
         - "7389:3389"
     volumes:
         - zhhome:/home/ai
-        - /home/wen/share:/nfs
-        - /home/wen/ZHProjects:/workspace
+        - /home/shixian/share:/nfs
+        - /home/shixian/ZHProjects:/workspace
     deploy:
       resources:
         reservations:
@@ -61,11 +61,11 @@ networks:
 
 volumes:
     bjhome:
-        name: bjhome
-        external: true
+        # name: bjhome
+        # external: true
     zhhome:
-        name: zhhome
-        external: true
+        # name: zhhome
+        # external: true
 
 
 

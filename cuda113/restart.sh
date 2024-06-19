@@ -5,15 +5,16 @@ containers=("ai113")
 
 for container in "${containers[@]}"; do
     echo "重启容器: $container"
-    # 检查容器是否不存在
-    if [ ! "$(docker ps -q -f name=$container)" ]; then
-        echo "容器 $container 不存在，启动容器。"
-        docker-compose up -d
-    else
-        # 重启 Docker 容器
-        echo "容器 $container 存在，重启容器。"
-        docker restart "$container"
-    fi
+    docker restart "$container"
+    # # 检查容器是否不存在
+    # if [ ! "$(docker ps -q -f name=$container)" ]; then
+    #     echo "容器 $container 不存在，启动容器。"
+    #     docker-compose up -d
+    # else
+    #     # 重启 Docker 容器
+    #     echo "容器 $container 存在，重启容器。"
+    #     docker restart "$container"
+    # fi
     # 检查容器重启状态
     if [ $? -eq 0 ]; then
         echo "容器 $container 重启成功，正在重启 xrdp 服务..."

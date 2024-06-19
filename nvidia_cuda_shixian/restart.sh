@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 容器名称列表
-containers=("ai" "bj" "zh")
+containers=("bj" "zh")
 
 for container in "${containers[@]}"; do
     echo "重启容器: $container"

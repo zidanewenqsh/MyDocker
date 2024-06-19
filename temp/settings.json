@@ -1,0 +1,12 @@
+{
+	"clangd.fallbackFlags": [
+		"-I${workspaceFolder}/_include/workflow",
+		"-I${workspaceFolder}/_include"
+	],
+	"clangd.arguments": [
+		"--background-index",
+		"--compile-commandsdir=${workspaceFolder}/build.cmake/"
+	],
+	"cmake.buildDirectory":	"${workspaceFolder}/build.cmake",
+	"cmake.buildEnvironment": {"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"}
+}
