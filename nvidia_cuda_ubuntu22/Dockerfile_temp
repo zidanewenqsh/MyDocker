@@ -1,0 +1,5 @@
+FROM registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:main-cu113-cudnn8-devel-ubuntu18-v3.1.1  
+LABEL author=wen \
+        version=0 \
+        description='nvidia_cuda-source bashrc'
+RUN bash -c "source /root/.bashrc"

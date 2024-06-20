@@ -1,0 +1,82 @@
+# # 使用官方Ubuntu 22.04基础镜像
+# FROM ubuntu:18.04
+
+# # 避免在安装过程中出现任何交互式前端界面的问题
+# ENV DEBIAN_FRONTEND=noninteractive
+
+# # 设置作者和描述信息（可选）
+# LABEL author="Your Name" \
+#       description="Ubuntu 18.04 with XRDP and XFCE"
+
+# # #  change resource 换清华源
+# RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+#     sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list      
+
+# # 更新系统并安装XRDP, XFCE环境，以及SSH
+# RUN apt-get update && apt-get upgrade -y && \
+#     apt-get install -y xrdp xfce4 xfce4-goodies sudo openssh-server && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# # 配置SSH允许Root登录
+# RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+#     echo "root:YOUR_PASSWORD" | chpasswd
+
+# # 设置XRDP来启动XFCE
+# RUN echo "xfce4-session" > /etc/skel/.xsession
+
+# # 复制.xsession文件到用户目录
+# RUN cp /etc/skel/.xsession /root/ && \
+#     echo "startxfce4" > ~/.xsession
+
+# # 为SSH和XRDP开放端口
+# EXPOSE 22 3389
+
+# # 添加启动脚本
+# RUN echo '#!/bin/bash\nservice ssh start\nservice xrdp start\nsleep infinity' > /start.sh && \
+#     chmod +x /start.sh
+
+# # 设置容器启动时运行的命令
+# CMD ["/start.sh"]
+
+# 使用官方Ubuntu 22.04基础镜像
+FROM ubuntu:22.04
+
+# 避免在安装过程中出现任何交互式前端界面的问题
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 设置作者和描述信息（可选）
+LABEL author="Your Name" \
+      description="Ubuntu 22.04 with XRDP, XFCE, and SSH using Tsinghua sources"
+
+# 替换为清华大学软件源
+RUN sed -i 's@archive.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list && \
+    sed -i 's@security.ubuntu.com@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list
+
+# 更新系统并安装XRDP, XFCE环境，以及SSH
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y xrdp xfce4 xfce4-goodies sudo openssh-server xorgxrdp && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 配置SSH允许Root登录
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    echo "root:YOUR_PASSWORD" | chpasswd
+
+# 设置XRDP来启动XFCE
+RUN echo "xfce4-session" > /etc/skel/.xsession && \
+    echo "xfce4-session" > /etc/skel/.Xclients && \
+    cp /etc/skel/.xsession /root/ && \
+    cp /etc/skel/.Xclients /root/ && \
+    chmod +x /root/.xsession && \
+    chmod +x /root/.Xclients
+
+# 为SSH和XRDP开放端口
+EXPOSE 22 3389
+
+# 添加启动脚本
+RUN printf "#!/bin/bash\nservice ssh start\nservice xrdp start\nsleep infinity\n" > /start.sh && \
+    chmod +x /start.sh
+
+# 设置容器启动时运行的命令
+CMD ["/start.sh"]
