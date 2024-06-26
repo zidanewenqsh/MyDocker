@@ -56,4 +56,10 @@ RUN printf "#!/bin/bash\nservice ssh start\nservice xrdp start\nsleep infinity\n
 # 设置容器启动时运行的命令
 CMD ["/start.sh"]
 
+# # user
+# RUN useradd -r -ms /bin/bash ai \
+#     && adduser ai sudo \
+#     && echo "ai:1"|chpasswd \
+#     && groupadd docker \
+#     && gpasswd -a ai docker
 

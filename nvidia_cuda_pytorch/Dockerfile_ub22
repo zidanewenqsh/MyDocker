@@ -107,21 +107,21 @@ RUN apt-get update && apt-get upgrade -y && \
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     echo "root:0" | chpasswd
 
-# # 设置XRDP来启动XFCE
-# RUN echo "startxfce4" > /etc/skel/.xsession && \
-#     echo "startxfce4" > /etc/skel/.Xclients && \
-#     cp /etc/skel/.xsession /root/ && \
-#     cp /etc/skel/.Xclients /root/ && \
-#     chmod +x /root/.xsession && \
-#     chmod +x /root/.Xclients
-
 # 设置XRDP来启动XFCE
-RUN echo "xfce4-session" > /etc/skel/.xsession && \
-    echo "xfce4-session" > /etc/skel/.Xclients && \
+RUN echo "startxfce4" > /etc/skel/.xsession && \
+    echo "startxfce4" > /etc/skel/.Xclients && \
     cp /etc/skel/.xsession /root/ && \
     cp /etc/skel/.Xclients /root/ && \
     chmod +x /root/.xsession && \
     chmod +x /root/.Xclients
+
+# # 设置XRDP来启动XFCE
+# RUN echo "xfce4-session" > /etc/skel/.xsession && \
+#     echo "xfce4-session" > /etc/skel/.Xclients && \
+#     cp /etc/skel/.xsession /root/ && \
+#     cp /etc/skel/.Xclients /root/ && \
+#     chmod +x /root/.xsession && \
+#     chmod +x /root/.Xclients
 
 # 创建 ~/.xsessionrc 并添加配置
 RUN echo "export GNOME_SHELL_SESSION_MODE=ubuntu" > /root/.xsessionrc && \
@@ -150,10 +150,3 @@ RUN printf "#!/bin/bash\nservice ssh start\nservice xrdp start\nsleep infinity\n
 
 # 设置容器启动时运行的命令
 CMD ["/start.sh"]
-
-# user
-RUN useradd -r -ms /bin/bash ai \
-    && adduser ai sudo \
-    && echo "ai:1"|chpasswd \
-    && groupadd docker \
-    && gpasswd -a ai docker

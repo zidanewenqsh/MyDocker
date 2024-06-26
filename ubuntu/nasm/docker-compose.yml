@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  ubuntu_xrdp:
+    # image: ubuntu:18.04-xrdp-nasm-v0
+    image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-xrdp-nasm-v1
+    container_name: n22
+    restart: unless-stopped
+    ports:
+      - "10022:22"    # 映射 SSH 端口
+      - "13389:3389"  # 映射 RDP 端口
+    # environment:
+    #   - DISPLAY=localhost:10.0
+    #   - QT_X11_NO_MITSHM=1
+    volumes:
+      # - /tmp/.X11-unix:/tmp/.X11-unix
+      # - $HOME/.Xauthority:/root/.Xauthority:rw
+      - /home/shixian/share:/nfs
+      - ./temp:/temp
+    command: ["/bin/bash", "-c", "service xrdp restart && /start.sh"] # 设置容器启动命令
+    networks:
+      - default
+
+networks:
+  default:
