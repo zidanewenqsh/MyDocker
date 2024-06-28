@@ -5,9 +5,11 @@ services:
     container_name: ai113
     image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:open3d-pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.5
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
-    shm_size: '64gb'
-    # environment:
-    #   - DISPLAY=${DISPLAY}
+    restart: unless-stopped
+    # command: ["bash", "-c", "service xrdp restart && /usr/sbin/sshd -D "]
+    shm_size: '16gb'
+    environment:
+      - DISPLAY=${DISPLAY}
     # network_mode: host
     networks:
         mycuda:
@@ -15,11 +17,19 @@ services:
     ports:
         - "8022:22"
         - "8389:3389"
+        - "10000-10009:10000-10009"
     volumes:
-        - aihome:/home/ai
-        - /home/shixian/share:/nfs
-        - /home/shixian/Projects:/workspace
-        # - /tmp/.X11-unix:/tmp/.X11-unix
+        # - aihome:${USER_HOME}
+        - ${HOME}/docker/vscode:${USER_HOME}/.vscode
+        - ${HOME}/docker/clash:${USER_HOME}/clash
+        - ${HOME}/docker/zshrc:${USER_HOME}/.zshrc
+        - ${HOME}/docker/config/clash:${USER_HOME}/.config/clash
+        - ${HOME}/anaconda3/envs:${USER_HOME}/.conda/envs
+        - ${HOME}/share:/nfs
+        - /workspace:/workspace
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /tmp/.X11-unix:/tmp/.X11-unix
+        - $HOME/.Xauthority:/root/.Xauthority:rw
     deploy:
       resources:
         reservations:
@@ -35,7 +45,7 @@ services:
 
 networks:
     mycuda:
-        name: aihost 
+        name: aihost
         external: true
 
 volumes:

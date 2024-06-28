@@ -4,7 +4,7 @@ services:
   nvidiacuda118:
     container_name: ai118
     # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
-    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v1
+    image: nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v0
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
     shm_size: '16gb'
     networks:

@@ -1,7 +1,9 @@
 #!/bin/bash
+# 停止脚本执行当命令返回非零返回码
+set -e
 
 # 下载Vim安装脚本
-wget 47.93.11.51:88/install_vim.sh
+# wget 47.93.11.51:88/install_vim.sh
 bash install_vim.sh
 
 # 安装zsh
@@ -11,7 +13,7 @@ sudo apt install -y zsh
 chsh -s /bin/zsh
 
 # 下载oh-my-zsh安装脚本
-wget 47.93.11.51:88/install_zsh.sh
+# wget 47.93.11.51:88/install_zsh.sh
 bash install_zsh.sh
 
 # 安装zsh-syntax-highlighting插件

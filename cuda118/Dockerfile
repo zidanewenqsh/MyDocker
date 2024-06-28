@@ -50,9 +50,10 @@ RUN mkdir -p /var/run/sshd \
 EXPOSE 22 3389
 
 # 添加启动脚本
-RUN printf "#!/bin/bash\nservice ssh start\nservice xrdp start\nsleep infinity\n" > /start.sh && \
+# RUN printf "#!/bin/bash\nservice ssh start\nservice xrdp start\nsleep infinity\n" > /start.sh && \
+#     chmod +x /start.sh
+RUN printf "#!/bin/bash\nservice xrdp restart\nservice ssh start\nservice xrdp start\nsleep infinity\n" > /start.sh && \
     chmod +x /start.sh
-
 # 设置容器启动时运行的命令
 CMD ["/start.sh"]
 

@@ -4,9 +4,12 @@ services:
   nvidiacuda118:
     container_name: ai118
     # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
-    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v1.2
-    #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
+    # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v1.2
+    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v0.1
+    #command: ["bash", "-c", "service xrdp restart && /usr/sbin/sshd -D "]
+    # command: ["/bin/bash", "-c", "service xrdp restart && /start.sh"] # 设置容器启动命令
     shm_size: '16gb'
+    restart: unless-stopped
     networks:
         mycuda:
            ipv4_address: 172.18.0.14
@@ -14,7 +17,7 @@ services:
         - "9022:22"
         - "9389:3389"
     volumes:
-        - aihome:/home/ai
+        # - aihome:/home/ai
         - /home/shixian/share:/nfs
         - /home/shixian/Projects:/workspace
         - /var/run/docker.sock:/var/run/docker.sock

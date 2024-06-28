@@ -1,17 +1,6 @@
 # 基于 NVIDIA 的 CUDA 镜像
-FROM nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v0.1.4 as base
+FROM nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v0.2.1
 
-# 复制 PyTorch 镜像的 /opt/conda 目录
-COPY --from=pytorch/pytorch:2.3.1-cuda11.8-cudnn8-devel /opt/conda /opt/conda
-
-# # 确保 /opt/conda/bin 在 PATH 中
-# ENV PATH /opt/conda/bin:$PATH
-
-# # 打印当前 PATH 查看是否设置成功
-# RUN echo $PATH
-# # # 清理工作
-# # RUN apt-get clean && \
-# #     rm -rf /var/lib/apt/lists/*
 # user
 RUN useradd -r -ms /bin/bash ai \
     && adduser ai sudo \
@@ -41,9 +30,5 @@ else\n\
 fi\n\
 unset __conda_setup\n'\
  >> ~/.bashrc 
-
-RUN echo '\n\
-source /usr/share/autojump/autojump.sh\n\
-'>>~/.bashrc 
 
 USER root

@@ -27,8 +27,6 @@ services:
               capabilities: [gpu]    #指定需要支持的功能；可以配置多个不同功能
               #capabilities: [gpu, utility] #支持多种功能
 
-
-
 networks:
     mycuda:
         name: aihost 
