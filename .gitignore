@@ -1,3 +1,8 @@
+mongo-data/
+mysql-data/
+neo4j-data/
+neo4j-logs/
+redis-data/
 vposer/
 .vscode
 .idea/

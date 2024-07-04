@@ -1,0 +1,60 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+        mycuda:
+           ipv4_address: 172.18.0.2
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+        mycuda:
+           ipv4_address: 172.18.0.3
+
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+    networks:
+        mycuda:
+           ipv4_address: 172.18.0.4
+
+  neo4j:
+    image: neo4j:latest
+    restart: unless-stopped
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/password
+    volumes:
+      - ./neo4j-data:/data
+      - ./neo4j-logs:/logs
+    networks:
+        mycuda:
+           ipv4_address: 172.18.0.5
+
+# networks:
+#   my_network:
+#     driver: bridge
+networks:
+    mycuda:
+        name: aihost 
+        external: true

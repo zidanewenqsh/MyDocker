@@ -5,7 +5,8 @@ services:
     container_name: ai118
     # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
     # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v1.2
-    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v0.1
+    # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v0.1
+    image: nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v1.0.2.6 
     #command: ["bash", "-c", "service xrdp restart && /usr/sbin/sshd -D "]
     # command: ["/bin/bash", "-c", "service xrdp restart && /start.sh"] # 设置容器启动命令
     shm_size: '16gb'
