@@ -15,6 +15,7 @@ services:
     volumes:
         - /home/shixian/Downloads:/temp/Downloads
         - /home/shixian/share:/nfs
+        - /home/shixian/docker/envs:/opt/conda/envs
         - /home/shixian/Projects:/workspace
         - /var/run/docker.sock:/var/run/docker.sock
     deploy:

@@ -2,7 +2,7 @@ version: '3.8'
 services:
   ubuntu_xrdp:
     # image: ubuntu:18.04-xrdp-nasm-v0
-    image: registry.cn-hangzhou.aliyuncs.com/phzn/ubuntu:18.04-xrdp-nasm-v1
+    image: registry.cn-beijing.aliyuncs.com/phzn/ubuntu:18.04-xrdp-nasm-v0
     container_name: ubuntu_xrdp
     restart: unless-stopped
     ports:

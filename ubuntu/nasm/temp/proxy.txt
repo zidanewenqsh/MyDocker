@@ -1,0 +1,21 @@
+# Set Proxy Function
+function setproxy() {
+    export http_proxy="http://127.0.0.1:7890"
+    export https_proxy="http://127.0.0.1:7890"
+    export ftp_proxy="http://127.0.0.1:7890"
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    echo "Proxy environment variable set."
+}
+
+# Unset Proxy Function
+function unsetproxy() {
+    unset http_proxy
+    unset https_proxy
+    unset ftp_proxy
+    unset no_proxy
+    echo "Proxy environment variable removed."
+}
+
+# Aliases for the Proxy Functions
+alias proxy='setproxy'
+alias unproxy='unsetproxy'

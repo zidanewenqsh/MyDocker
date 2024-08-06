@@ -1,0 +1,22 @@
+files:
+  - url: ""
+    time: 1713496076764.yml
+    name: config.yaml
+    selected: []
+    mode: direct
+  - time: 1713498455129.yml
+    name: 8dbe7ae0-7ccd-4bf5-98bb-b602328385e0
+    url: https://s.trojanflare.com/clashx/8dbe7ae0-7ccd-4bf5-98bb-b602328385e0
+    selected:
+      - name: GLOBAL
+        now: Japan-TY-2-Rate:1.0
+      - name: Proxy
+        now: Auto
+    interval: 0
+    subInfo:
+      upload: 946468147
+      download: 16395803422
+      total: 107374182400
+      expire: 1809446400
+    mode: global
+index: 1

@@ -100,7 +100,8 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
     && sed -i '/exec -a "$0" "$HERE\/chrome" "$@"/s/\(exec -a "$0" "$HERE\/chrome" "$@"\)/\1 --user-data-dir --no-sandbox --disable-dev-shm-usage/g' /opt/google/chrome/google-chrome
 
 # vscode 
-RUN wget https://az764295.vo.msecnd.net/stable/ee2b180d582a7f601fa6ecfdad8d9fd269ab1884/code_1.76.2-1678817801_amd64.deb -O vscode.deb \
+# RUN wget https://az764295.vo.msecnd.net/stable/ee2b180d582a7f601fa6ecfdad8d9fd269ab1884/code_1.76.2-1678817801_amd64.deb -O vscode.deb \
+RUN wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/1a5daa3a0231a0fbba4f14db7ec463cf99d7768e/code_1.84.2-1699528352_amd64.deb -O vscode.deb \
     && dpkg -i vscode.deb \
     && rm vscode.deb \
     && sed -i '/Exec/s/\(Exec=\/usr\/share\/code\/code \S*\) %F/\1 --no-sandbox %F/g' /usr/share/applications/code.desktop
