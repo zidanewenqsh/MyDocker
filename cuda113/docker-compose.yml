@@ -6,7 +6,8 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:open3d-pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.5
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
     restart: unless-stopped
-    # command: ["bash", "-c", "service xrdp restart && /usr/sbin/sshd -D "]
+    # command: bash -c "service xrdp restart && /usr/sbin/sshd -D"
+    command: ["bash", "-c", "service xrdp restart && /usr/sbin/sshd -D "]
     shm_size: '16gb'
     environment:
       - DISPLAY=${DISPLAY}
@@ -41,7 +42,60 @@ services:
               capabilities: [gpu]    #指定需要支持的功能；可以配置多个不同功能
               #capabilities: [gpu, utility] #支持多种功能
 
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      mycuda:
+        ipv4_address: 172.18.0.5
 
+  redis:
+    image: redis:latest
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      mycuda:
+        ipv4_address: 172.18.0.6
+
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      mycuda:
+        ipv4_address: 172.18.0.7
+
+  neo4j:
+    image: neo4j:latest
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH}
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    networks:
+      mycuda:
+        ipv4_address: 172.18.0.8
 
 networks:
     mycuda:
@@ -52,6 +106,11 @@ volumes:
     aihome:
         # name: aihome
         # external: true
+    mysql_data:
+    redis_data:
+    mongo_data:
+    neo4j_data:
+    neo4j_logs:
 
 
 
