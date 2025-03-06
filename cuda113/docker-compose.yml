@@ -3,7 +3,7 @@ version: "3.8"
 services:
   nvidiacuda113:
     container_name: ai113
-    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:open3d-pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.5
+    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:java-open3d-pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.3.1
     #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
     restart: unless-stopped
     # command: bash -c "service xrdp restart && /usr/sbin/sshd -D"
@@ -44,6 +44,7 @@ services:
 
   mysql:
     image: mysql:latest
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -59,6 +60,7 @@ services:
 
   redis:
     image: redis:latest
+    restart: unless-stopped
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
@@ -72,6 +74,7 @@ services:
 
   mongo:
     image: mongo:latest
+    restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
@@ -85,6 +88,7 @@ services:
 
   neo4j:
     image: neo4j:latest
+    restart: unless-stopped
     environment:
       NEO4J_AUTH: ${NEO4J_AUTH}
     ports:

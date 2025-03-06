@@ -1,0 +1,32 @@
+version: '3'
+services:
+  swag:
+    image: linuxserver/swag:3.2.0
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai  # 根据实际情况修改时区
+      - URL=localhost
+      - SUBDOMAINS=
+      - VALIDATION=http
+    ports:
+      - "8443:443"  # 修改为 8443，避免与宿主机的 443 端口冲突
+      - "8080:80"   # 修改为 8080，避免与宿主机的 80 端口冲突
+    volumes:
+      - swag_config:/config  # 替换为实际的配置文件存储路径
+      - ${HOME}/share:/nfs
+    restart: unless-stopped
+    networks:
+      mycuda:
+        ipv4_address: 172.18.0.9
+
+networks:
+    mycuda:
+        name: aihost
+        external: true
+volumes:
+    swag_config:
+  
